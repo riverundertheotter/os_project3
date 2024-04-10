@@ -19,8 +19,8 @@ namespace synchronization
       // Write your code here
 	  // initialize mutex as binary semaphore for mutual exclusion
 	  // initialize turnstile1 and turnstile2 as counting initially blocking all threads
-	  // set count to 0
-	  // set total_threads to numberOfThreads
+	  count = 0;
+	  total_threads = numberOfThreads;
 	  return;
    }
 
@@ -35,27 +35,32 @@ namespace synchronization
    void barrier::arriveAndWait( void ) {
       // Write your code here
 	  // wait on mutex to enter critical section
-	  // count++;
-	  // if (count == total_threads) then
+	  sem_wait(&mutex);
+	  count++;
+	  if (count == total_threads) {
 	  // 	loop total_threads times
-	  // 	for (int i = 0; i < total_threads; i++) {
-	  // 		signal turnstile1 to open it and let threads through
-	  // 	}
+	  	for (int i = 0; i < total_threads; i++) {
+	  // 	signal turnstile1 to open it and let threads through
+	  	}
+	  }
 	  // signal mutex to leave critical section
 	  // wait on turnstile1 allowing threads to proceed in sync
-	  //
+	  sem_wait(&turnstile1);
 	  // next phase
 	  //
 	  // wait on mutex to enter crit section again
-	  // count--;
-	  // if (count == 0) then
+	  sem_wait(&mutex);
+	  count--;
+	  if (count == 0) {
 	  // 	loop total_threads times
-	  // 	for (int i = 0; i < total_threads; i++) {
+	  	for (int i = 0; i < total_threads; i++) {
 	  // 		signal turnstile2 to open for next phase
-	  // 	}
+	  	}
+	  }
 	  // signal mutex to leave crit section
 	  // wait on turnstile2, ensuring threads are sync'ed for next round
-      return;
+      sem_wait(&turnstile2);
+	  return;
    }
 
 }
