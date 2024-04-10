@@ -1,14 +1,19 @@
+#include <semaphore.h>
 #include "barrier.h"
 
 namespace synchronization
 {
    private: 
 	  // mutex: semaphore for mutual exclusion
+	  sem_t mutex;
 	  // turnstile1: semaphore for blocking threads in the current phase
+	  sem_t turnstile1;
 	  // turnstile2: semaphore for preparing the next phase
+	  sem_t turnstile1;
 	  // count: number of threads that have arrived
+	  int count;
 	  // total_threads: total num of threads to synchronize
-
+	  int total_threads;
 
    barrier::barrier( int numberOfThreads ) {
       // Write your code here
@@ -21,17 +26,21 @@ namespace synchronization
 
    barrier::~barrier( ) {
       // Write your code here
-	  // destroy mutex, turnstile1 and 2
-      return;
+      sem_destroy(&mutex);
+	  sem_destroy(&turnstile1);
+	  sem_destroy(&turnstile2);
+	  return;
    }
 
    void barrier::arriveAndWait( void ) {
       // Write your code here
 	  // wait on mutex to enter critical section
-	  // increment count
-	  // if count == total_threads then
+	  // count++;
+	  // if (count == total_threads) then
 	  // 	loop total_threads times
+	  // 	for (int i = 0; i < total_threads; i++) {
 	  // 		signal turnstile1 to open it and let threads through
+	  // 	}
 	  // signal mutex to leave critical section
 	  // wait on turnstile1 allowing threads to proceed in sync
 	  //
@@ -39,9 +48,11 @@ namespace synchronization
 	  //
 	  // wait on mutex to enter crit section again
 	  // count--;
-	  // if count == 0 then
+	  // if (count == 0) then
 	  // 	loop total_threads times
+	  // 	for (int i = 0; i < total_threads; i++) {
 	  // 		signal turnstile2 to open for next phase
+	  // 	}
 	  // signal mutex to leave crit section
 	  // wait on turnstile2, ensuring threads are sync'ed for next round
       return;
