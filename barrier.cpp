@@ -1,4 +1,5 @@
 #include <semaphore.h>
+#include <iostream>
 #include "barrier.h"
 
 namespace synchronization {
@@ -26,6 +27,7 @@ namespace synchronization {
    void barrier::arriveAndWait( void ) {
       // Write your code here
 	  // wait on mutex to enter critical section
+	  std::cout<<"Arrived at the barrier!\n";
 	  sem_wait(&mutex);
 	  count++;
 	  if (count == total_threads) {
@@ -38,7 +40,7 @@ namespace synchronization {
 	  sem_post(&mutex);
 	  sem_wait(&turnstile1);
 	  // next phase
-	  
+	  std::cout<<"setting up for next phase!\n";
 	  // wait on mutex to enter crit section again
 	  sem_wait(&mutex);
 	  count--;
@@ -51,6 +53,7 @@ namespace synchronization {
 	  // wait on turnstile2, ensuring threads are sync'ed for next round
       sem_post(&mutex);
 	  sem_wait(&turnstile2);
+	  std::cout << "going into next phase!\n";
 	  return;
    }
 }
