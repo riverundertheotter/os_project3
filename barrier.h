@@ -6,8 +6,6 @@
 
 namespace synchronization
 {
-
-
    // Provides a reusable barrier
    class barrier {
    private:

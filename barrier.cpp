@@ -27,7 +27,6 @@ namespace synchronization {
    void barrier::arriveAndWait( void ) {
       // Write your code here
 	  // wait on mutex to enter critical section
-	  std::cout<<"Arrived at the barrier!\n";
 	  sem_wait(&mutex);
 	  count++;
 	  if (count == total_threads) {
@@ -40,7 +39,6 @@ namespace synchronization {
 	  sem_post(&mutex);
 	  sem_wait(&turnstile1);
 	  // next phase
-	  std::cout<<"setting up for next phase!\n";
 	  // wait on mutex to enter crit section again
 	  sem_wait(&mutex);
 	  count--;
@@ -50,10 +48,9 @@ namespace synchronization {
 		}
 	  }
 	  // signal mutex to leave crit section
-	  // wait on turnstile2, ensuring threads are sync'ed for next round
+	  // wait on turnstile2, making sure threads are sync'ed for next round
       sem_post(&mutex);
 	  sem_wait(&turnstile2);
-	  std::cout << "going into next phase!\n";
 	  return;
    }
 }
